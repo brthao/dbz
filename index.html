@@ -2,76 +2,14 @@
   <head></head>
   <body>
     <div id="game"></div>
+    <script type="text/javascript" src="require.js"></script>
     <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
-    <script type="text/javascript" src="assets.js"></script>
+    <!--<script type="text/javascript" src="loads.js"></script>
+    <script type="text/javascript" src="goku.js"></script>-->
     <script>
-      window.onload = function() {
-          var groundY = 340;
-          var maxY = 350;
-          var maxX = 500;
-          var structWeight = 10;
-
-          var canvas = Crafty.init(maxX,maxY, document.getElementById("game"));
-
-          //entity representing the ground
-          var ground = Crafty.e("Floor, 2D, Canvas, Color")
-                .attr({x: 0, y: groundY, w: maxX, h: structWeight})
-                .color("green");
-          var ceiling = Crafty.e("Floor, 2D, Canvas, Color")
-              .attr({x: 0, y: 0, w: maxX, h: structWeight})
-              .color("blue");
-
-          var floatingGround1 = Crafty.e("Floor, 2D, Canvas, Color")
-              .color("#FAC")
-              .attr({x: 0, y: 250, w: 150, h: structWeight});
-          var floatingGround2 = Crafty.e("Floor, 2D, Canvas, Color")
-              .color("#FAC")
-              .attr({x: 150, y: 150, w: 150, h: structWeight});
-          var floatingGround3 = Crafty.e("Floor, 2D, Canvas, Color")
-              .color("#FAC")
-              .attr({x: 250, y: 250, w: 150, h: structWeight});
-
-          var leftWall = Crafty.e("LeftWall, Wall, 2D, Canvas, Color")
-              .color("#FF0")
-              .attr({x: 0, y: 0, w: 10, h: maxY});
-
-          var rightWall = Crafty.e("RightWall, Wall, 2D, Canvas, Color")
-              .color("#FF0")
-              .attr({x: maxX-structWeight, y: 0, w: 10, h: maxY});
-
-          var goku = Crafty.e("Goku, 2D, DOM, Color, Twoway, Gravity, Collision");
-
-          //set basic attributes of the entity
-          //here : set entity location => center of the main canvas
-          goku.attr({x: maxX/2, y: maxY-ground.h, w:50, h: 50});
-
-          //set color of the entity
-          goku.color("#F00");
-
-          //allow the entity to move left and right at the speed 200
-          goku.twoway("200");
-
-          //the entity is now "attracted gravitationnaly" by the entity called Floor set before
-          goku.gravity("Floor");
-
-          //set the force of the gravity
-          goku.gravityConst("900");
-
-
-          //Collisions handling : when a collision occurs, velocity is changed to the opposite direction ( so goku move a little to the opposite direction)
-          goku.onHit("Floor",function(evt){
-            goku.vy = 200;
-          });
-
-          goku.onHit("RightWall", function(evt){
-            goku.vx = -200;
-          });
-          goku.onHit("LeftWall", function(evt){
-              goku.vx = 200;
-          });
-          beginning();
-
-      }
+      _dbz = {} ;
     </script>
+    <script type="text/javascript" src="main.js"></script>
+
   </body>
 </html>
