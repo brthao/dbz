@@ -56,40 +56,19 @@
       //set the force of the gravity
       goku.gravityConst("900");
 
-      //when jumping : if a collision occurs, stop jump
-      /*
-      goku.checkHits("Floor").bind("HitOn",function(hitData){
-          if(goku.y > maxY-80){
-              Crafty.log("debug");
-              return;
-          }
-          goku.vy = 200;
-          Crafty.log("Collision with Solid entity occurred for the first time.");
-          Crafty.log(hitData);
-      });
-
-      goku.checkHits("Wall").bind("HitOn",function(hitData){
-          goku.vx = -400;
-          Crafty.log("Wall");
-          Crafty.log(hitData);
-      });
-      */
+      
+      //Collisions handling : when a collision occurs, velocity is changed to the opposite direction ( so goku move a little to the opposite direction)
       goku.onHit("Floor",function(evt){
-        console.log("floor");
         goku.vy = 200;
       });
 
       goku.onHit("RightWall", function(evt){
-        console.log("RIGHTWALL");
         goku.vx = -200;
       });
       goku.onHit("LeftWall", function(evt){
-          console.log("LEFT");
           goku.vx = 200;
       });
 
-
-      console.log(goku._element.id);
     </script>
   </body>
 </html>
