@@ -15,17 +15,23 @@
       var ground = Crafty.e("Floor, 2D, Canvas, Color")
 			.attr({x: 0, y: groundY, w: maxX, h: 10})
 			.color("green");
+      var ceiling = Crafty.e("Floor, 2D, Canvas, Color")
+          .attr({x: 0, y: 0, w: maxX, h: 10})
+          .color("blue");
 
-      var floatingGround = Crafty.e("Floor, 2D, Canvas, Color")
+      var floatingGround1 = Crafty.e("Floor, 2D, Canvas, Color")
           .color("#FAC")
           .attr({x: 0, y: 250, w: 150, h: 10});
+      var floatingGround2 = Crafty.e("Floor, 2D, Canvas, Color")
+          .color("#FAC")
+          .attr({x: 150, y: 150, w: 150, h: 10});
 
 
       var goku = Crafty.e("Goku, 2D, DOM, Color, Twoway, Gravity, Collision");
 
       //set basic attributes of the entity
       //here : set entity location => center of the main canvas
-      goku.attr({x: maxX/2, y: maxY/2, w:50, h: 50});
+      goku.attr({x: maxX/2, y: maxY-ground.h, w:50, h: 50});
 
       //set color of the entity
       goku.color("#F00");
@@ -37,10 +43,11 @@
       goku.gravity("Floor");
 
       //set the force of the gravity
-      goku.gravityConst("800");
+      goku.gravityConst("900");
 
+      //when jumping : if a collision occurs, stop jump
       goku.checkHits("Floor").bind("HitOn",function(hitData){
-          goku.y = goku.y;
+          goku.vy = 200;
           Crafty.log("Collision with Solid entity occurred for the first time.");
           Crafty.log(hitData);
       });
