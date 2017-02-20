@@ -1,16 +1,6 @@
 /**
  * Created by aubret on 20/02/17.
  */
-/*require.config({
-    paths: {
-        'Crafty': "https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js",
-    },
-    shim: {
-        'Crafty': {
-            exports: "Crafty"
-        }
-    }
-});*/
 
 require(['loads', 'goku'], function(assets, goku) {
     var assets=new assets() ;
