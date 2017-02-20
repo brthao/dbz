@@ -8,24 +8,35 @@
       var groundY = 340;
       var maxY = 350;
       var maxX = 500;
+      var structWeight = 10;
 
       var canvas = Crafty.init(maxX,maxY, document.getElementById("game"));
 
       //entity representing the ground
       var ground = Crafty.e("Floor, 2D, Canvas, Color")
-			.attr({x: 0, y: groundY, w: maxX, h: 10})
+			.attr({x: 0, y: groundY, w: maxX, h: structWeight})
 			.color("green");
       var ceiling = Crafty.e("Floor, 2D, Canvas, Color")
-          .attr({x: 0, y: 0, w: maxX, h: 10})
+          .attr({x: 0, y: 0, w: maxX, h: structWeight})
           .color("blue");
 
       var floatingGround1 = Crafty.e("Floor, 2D, Canvas, Color")
           .color("#FAC")
-          .attr({x: 0, y: 250, w: 150, h: 10});
+          .attr({x: 0, y: 250, w: 150, h: structWeight});
       var floatingGround2 = Crafty.e("Floor, 2D, Canvas, Color")
           .color("#FAC")
-          .attr({x: 150, y: 150, w: 150, h: 10});
+          .attr({x: 150, y: 150, w: 150, h: structWeight});
+      var floatingGround3 = Crafty.e("Floor, 2D, Canvas, Color")
+          .color("#FAC")
+          .attr({x: 250, y: 250, w: 150, h: structWeight});
 
+      var leftWall = Crafty.e("LeftWall, Wall, 2D, Canvas, Color")
+          .color("#FF0")
+          .attr({x: 0, y: 0, w: 10, h: maxY});
+
+      var rightWall = Crafty.e("RightWall, Wall, 2D, Canvas, Color")
+          .color("#FF0")
+          .attr({x: maxX-structWeight, y: 0, w: 10, h: maxY});
 
       var goku = Crafty.e("Goku, 2D, DOM, Color, Twoway, Gravity, Collision");
 
@@ -46,10 +57,35 @@
       goku.gravityConst("900");
 
       //when jumping : if a collision occurs, stop jump
+      /*
       goku.checkHits("Floor").bind("HitOn",function(hitData){
+          if(goku.y > maxY-80){
+              Crafty.log("debug");
+              return;
+          }
           goku.vy = 200;
           Crafty.log("Collision with Solid entity occurred for the first time.");
           Crafty.log(hitData);
+      });
+
+      goku.checkHits("Wall").bind("HitOn",function(hitData){
+          goku.vx = -400;
+          Crafty.log("Wall");
+          Crafty.log(hitData);
+      });
+      */
+      goku.onHit("Floor",function(evt){
+        console.log("floor");
+        goku.vy = 200;
+      });
+
+      goku.onHit("RightWall", function(evt){
+        console.log("RIGHTWALL");
+        goku.vx = -200;
+      });
+      goku.onHit("LeftWall", function(evt){
+          console.log("LEFT");
+          goku.vx = 200;
       });
 
 
