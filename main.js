@@ -2,42 +2,51 @@
  * Created by aubret on 20/02/17.
  */
 
-require(['loads', 'goku'], function(assets, goku) {
-    var assets=new assets() ;
+require(['loads', 'goku', 'TiledMapBuilder-master/WebContent/tiledmapbuilder','resources/maps/map1/map','elements'],
+    function(assets, goku, tiledmapbuilder, firstMap, components ) {
 
-    _dbz.groundY = 340;
-    _dbz.maxY = 350;
-    _dbz.maxX = 500;
+
+    _dbz.groundY = 400;
+    _dbz.maxY = 480;
+    _dbz.maxX = 800;
     _dbz.structWeight = 10;
 
     var canvas = Crafty.init(_dbz.maxX, _dbz.maxY, document.getElementById("game"));
+    Crafty.background('url(resources/bg.png) center center');
 
-//entity representing the ground
-    _dbz.ground = Crafty.e("Floor, 2D, Canvas, Color")
-        .attr({x: 0, y: _dbz.groundY, w: _dbz.maxX, h: _dbz.structWeight})
-        .color("green");
-    var ceiling = Crafty.e("Floor, 2D, Canvas, Color")
-        .attr({x: 0, y: 0, w: _dbz.maxX, h: _dbz.structWeight})
-        .color("blue");
-
-    var floatingGround1 = Crafty.e("Floor, 2D, Canvas, Color")
-        .color("#FAC")
-        .attr({x: 0, y: 250, w: 150, h: _dbz.structWeight});
-    var floatingGround2 = Crafty.e("Floor, 2D, Canvas, Color")
-        .color("#FAC")
-        .attr({x: 150, y: 150, w: 150, h: _dbz.structWeight});
-    var floatingGround3 = Crafty.e("Floor, 2D, Canvas, Color")
-        .color("#FAC")
-        .attr({x: 250, y: 250, w: 150, h: _dbz.structWeight});
-
-    var leftWall = Crafty.e("LeftWall, Wall, 2D, Canvas, Color")
-        .color("#FF0")
-        .attr({x: 0, y: 0, w: 10, h: _dbz.maxY});
-
-    var rightWall = Crafty.e("RightWall, Wall, 2D, Canvas, Color")
-        .color("#FF0")
-        .attr({x: _dbz.maxX - _dbz.structWeight, y: 0, w: 10, h: _dbz.maxY});
+    var callback = function() {
+        goku.init();
+        console.log(goku.getEntity());
+        Crafty.viewport.clampToEntities = false;
+        Crafty.viewport.mouselook(false);
+        Crafty.one("CameraAnimationDone", function () {
+            Crafty.viewport.follow(goku.getEntity(), 0, 0);
+        });
+        Crafty.viewport.centerOn(goku.getEntity(), 500);
+    };
 
     var goku = new goku(_dbz);
-    Crafty.load(assets.assets, goku.init);
+    var assets=new assets() ;
+    var components= new components() ;
+    var mapComponent = tiledmapbuilder;
+    var map = firstMap;
+    console.log(components);
+    Crafty.c("elements", components.elements);
+    Crafty.c("TiledMapBuilder",mapComponent) ;
+    Crafty.e("2D, DOM, TiledMapBuilder").setMapDataSource(map)
+        .createWorld(function (tiledmap) {
+            for(var i=0; i < tiledmap.getEntitiesInLayer("ground").length ; i++){
+                var entity = tiledmap.getEntitiesInLayer("ground")[i];
+                entity.addComponent("Floor");
+            }
+            for(var i=0; i < tiledmap.getEntitiesInLayer("decor").length ; i++){
+                var entity = tiledmap.getEntitiesInLayer("decor")[i];
+                entity.addComponent("elements");
+            }
+            for(var i=0; i < tiledmap.getEntitiesInLayer("echelle").length ; i++){
+                var entity = tiledmap.getEntitiesInLayer("echelle")[i];
+                entity.addComponent("ladder");
+            }
+            Crafty.load(assets.assets, callback);
+        });
 });

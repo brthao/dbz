@@ -18,6 +18,9 @@ define([], function() {
                         gokuEnd: [7, 7]
                     }
                 }
+            },
+            "images" : {
+
             }
         };
     };

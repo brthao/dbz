@@ -3,8 +3,12 @@
  */
 define([], function() {
     var goku = function(_dbz) {
+        var entity = 0 ;
+        this.getEntity=function(){
+            return entity ;
+        };
         this.init = function () {
-            Crafty.e('2D, Canvas, gokuStart, SpriteAnimation, Twoway, Keyboard, Gravity, Collision')
+            entity= Crafty.e('2D, Canvas, gokuStart, SpriteAnimation, Twoway, Keyboard, Gravity, Collision')
                 .reel("walkingRight", 500, [ // 4 sprite to walk to the right
                     [6, 5], [7, 5], [8, 5] // [x , y] positions in sprite sheet
                 ])
@@ -24,6 +28,7 @@ define([], function() {
                         if (!this.isDown(Crafty.keys.LEFT_ARROW))
                             this.animate("walkingRight", -1);
                     }
+                    e.originalEvent.preventDefault();
                 })
                 .bind('KeyUp', function (e) {
                     if (this.isDown(Crafty.keys.RIGHT_ARROW)) { //use for debug
@@ -33,8 +38,9 @@ define([], function() {
                     } else {
                         this.pauseAnimation();
                     }
+                    e.originalEvent.preventDefault();
                 })
-                .attr({x: _dbz.maxX / 2, y: _dbz.maxY - _dbz.ground.h, w: 50, h: 50})
+                .attr({x: 50, y: 300, w: 50, h: 50})
                 .gravity("Floor")
                 .gravityConst("900")
                 //Collisions handling : when a collision occurs, velocity is changed to the opposite direction ( so goku move a little to the opposite direction)
@@ -46,7 +52,7 @@ define([], function() {
                 .onHit("LeftWall", function (evt) {
                     this.vx = 200;
                 });
-        }
+        };
     };
     return goku ;
 });
