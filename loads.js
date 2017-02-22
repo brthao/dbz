@@ -16,7 +16,7 @@ define([], function() {
                         gokuStart: [6, 6],
                         gokuMiddle: [6, 7],
                         gokuEnd: [7, 7]
-                    }
+                    },
                 }
             },
             "images" : {

@@ -16,7 +16,6 @@ require(['loads', 'goku', 'TiledMapBuilder-master/WebContent/tiledmapbuilder','r
 
     var callback = function() {
         goku.init();
-        console.log(goku.getEntity());
         Crafty.viewport.clampToEntities = false;
         Crafty.viewport.mouselook(false);
         Crafty.one("CameraAnimationDone", function () {
@@ -30,7 +29,6 @@ require(['loads', 'goku', 'TiledMapBuilder-master/WebContent/tiledmapbuilder','r
     var components= new components() ;
     var mapComponent = tiledmapbuilder;
     var map = firstMap;
-    console.log(components);
     Crafty.c("elements", components.elements);
     Crafty.c("TiledMapBuilder",mapComponent) ;
     Crafty.e("2D, DOM, TiledMapBuilder").setMapDataSource(map)
@@ -47,6 +45,12 @@ require(['loads', 'goku', 'TiledMapBuilder-master/WebContent/tiledmapbuilder','r
                 var entity = tiledmap.getEntitiesInLayer("echelle")[i];
                 entity.addComponent("ladder");
             }
+            for(var i=0; i < tiledmap.getEntitiesInLayer("oblique").length ; i++){
+                var entity = tiledmap.getEntitiesInLayer("oblique")[i];
+                entity.addComponent("oblique, Collision");
+                entity.collision( new Crafty.polygon(32,32,0,32,32,0) )
+            }
+
             Crafty.load(assets.assets, callback);
         });
 });

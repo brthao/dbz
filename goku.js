@@ -8,7 +8,7 @@ define([], function() {
             return entity ;
         };
         this.init = function () {
-            entity= Crafty.e('2D, Canvas, gokuStart, SpriteAnimation, Twoway, Keyboard, Gravity, Collision')
+            entity = Crafty.e('2D, Canvas, gokuStart, SpriteAnimation, Twoway, Keyboard, Gravity, Collision, Motion, SolidHitBox')
                 .reel("walkingRight", 500, [ // 4 sprite to walk to the right
                     [6, 5], [7, 5], [8, 5] // [x , y] positions in sprite sheet
                 ])
@@ -28,7 +28,8 @@ define([], function() {
                         if (!this.isDown(Crafty.keys.LEFT_ARROW))
                             this.animate("walkingRight", -1);
                     }
-                    e.originalEvent.preventDefault();
+                    if (e != undefined && e.originalEvent != undefined)
+                        e.originalEvent.preventDefault();
                 })
                 .bind('KeyUp', function (e) {
                     if (this.isDown(Crafty.keys.RIGHT_ARROW)) { //use for debug
@@ -38,20 +39,37 @@ define([], function() {
                     } else {
                         this.pauseAnimation();
                     }
-                    e.originalEvent.preventDefault();
+                    if (e != undefined && e.originalEvent != undefined)
+                        e.originalEvent.preventDefault();
                 })
+                .collision(
+                    new Crafty.polygon(5, 5, 40, 5, 40, 45, 5, 45)
+                )
                 .attr({x: 50, y: 300, w: 50, h: 50})
                 .gravity("Floor")
                 .gravityConst("900")
                 //Collisions handling : when a collision occurs, velocity is changed to the opposite direction ( so goku move a little to the opposite direction)
-                .onHit("Floor", function (evt) {
-                    this.vy = 200;
-                }).onHit("RightWall", function (evt) {
-                    this.vx = -200;
+                .bind('Moved', function (from) {
+                    if (from.axis == "x") {
+                        if (this.hit('Wall')) {
+                            this.x = from.oldValue;
+                        }
+                    } else {
+                        if (this.hit('Wall')) {
+                            //this.vy += -200 ;
+                            //this.y=from.oldValue ;
+                            console.log("hit y");
+                        }
+                        if (this.y > 500) {
+                            console.log("loose");
+                        }
+                    }
+                }).onHit("oblique", function (data) {
+                    var obj = data[0].obj;
+                    this.move("n", 5);
+                    this.resetHitChecks('oblique');
                 })
-                .onHit("LeftWall", function (evt) {
-                    this.vx = 200;
-                });
+
         };
     };
     return goku ;
