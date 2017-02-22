@@ -35,7 +35,7 @@ require(['loads', 'goku', 'TiledMapBuilder-master/WebContent/tiledmapbuilder','r
         .createWorld(function (tiledmap) {
             for(var i=0; i < tiledmap.getEntitiesInLayer("ground").length ; i++){
                 var entity = tiledmap.getEntitiesInLayer("ground")[i];
-                entity.addComponent("Floor");
+                entity.addComponent("Floor, Collision, Wall");
             }
             for(var i=0; i < tiledmap.getEntitiesInLayer("decor").length ; i++){
                 var entity = tiledmap.getEntitiesInLayer("decor")[i];

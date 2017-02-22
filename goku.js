@@ -43,9 +43,9 @@ define([], function() {
                         e.originalEvent.preventDefault();
                 })
                 .collision(
-                    new Crafty.polygon(5, 5, 40, 5, 40, 45, 5, 45)
+                    new Crafty.polygon(10, 10, 35, 10, 35, 42, 10, 42)
                 )
-                .attr({x: 50, y: 300, w: 50, h: 50})
+                .attr({x: 50, y: 300, w: 32, h: 50})
                 .gravity("Floor")
                 .gravityConst("900")
                 //Collisions handling : when a collision occurs, velocity is changed to the opposite direction ( so goku move a little to the opposite direction)
@@ -53,11 +53,12 @@ define([], function() {
                     if (from.axis == "x") {
                         if (this.hit('Wall')) {
                             this.x = from.oldValue;
+
                         }
                     } else {
                         if (this.hit('Wall')) {
-                            //this.vy += -200 ;
-                            //this.y=from.oldValue ;
+                            this.vy =100 ;
+                            this.y=from.oldValue ;
                             console.log("hit y");
                         }
                         if (this.y > 500) {
@@ -69,6 +70,18 @@ define([], function() {
                     this.move("n", 5);
                     this.resetHitChecks('oblique');
                 })
+                .bind("CheckLanding", function(ground) {
+                    //console.log(this) ;
+                    if (this.y + this.h > ground.y + this.dy) { // forbid landing, if player's feet are not above ground
+                        this.canLand = false;
+                    }
+                    /*var collision = this.cbr();
+                    console.log(collision);
+                    console.log(ground.mbr());
+                    if(ground.intersect(collision._x, collision._y + 10, collision._w, collision._h-10)){
+                        this.canLand=false ;
+                    }*/
+                });
 
         };
     };

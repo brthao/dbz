@@ -5,7 +5,7 @@ define([], function() {
     var components = function(){
         this.elements= {
             init: function () {
-                this.addComponent("Floor,Wall, Collision");
+                this.addComponent("Wall, Collision");
             }
         };
     };
