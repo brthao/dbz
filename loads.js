@@ -16,12 +16,24 @@ define([], function() {
                         gokuStart: [6, 6],
                         gokuMiddle: [6, 7],
                         gokuEnd: [7, 7]
-                    },
+                    }
+                },
+                "energy.png" :{
+                    tile : 29,
+                    tileh: 30,
+                    map : {
+                        bigEnergy : [11 , 1]
+                    }
+                },
+                "dragonball.PNG":{
+                    tile :96,
+                    tileh : 96,
+                    map :{
+                        explosion : [1,1]
+                    }
+
                 }
             },
-            "images" : {
-
-            }
         };
     };
     return assets ;

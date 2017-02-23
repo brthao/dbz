@@ -8,15 +8,15 @@ define([], function() {
             return entity ;
         };
         this.init = function () {
-            entity = Crafty.e('2D, Canvas, gokuStart, SpriteAnimation, Twoway, Keyboard, Gravity, Collision, Motion, SolidHitBox')
+            entity = Crafty.e('2D, Canvas, goku, gokuStart, SpriteAnimation, Twoway, Keyboard, Gravity, Collision, Motion')
                 .reel("walkingRight", 500, [ // 4 sprite to walk to the right
                     [6, 5], [7, 5], [8, 5] // [x , y] positions in sprite sheet
                 ])
                 .reel("walkingLeft", 500, [ // sprite to go to the left
                     [6, 7], [7, 7], [8, 7]
                 ])
-                .twoway("200")
-                .bind('KeyDown', function (e) {// To move to left and right
+                .twoway("200");
+            entity.bind('KeyDown', function (e) {// To move to left and right
                     if (this.isDown(Crafty.keys.RIGHT_ARROW) && this.isDown(Crafty.keys.LEFT_ARROW)) {
                         this.pauseAnimation();
                         return;
@@ -27,6 +27,9 @@ define([], function() {
                     } else if (e.key == Crafty.keys.RIGHT_ARROW) { // Start the sprite to go right
                         if (!this.isDown(Crafty.keys.LEFT_ARROW))
                             this.animate("walkingRight", -1);
+                    }
+                    if(e.key == Crafty.keys.S){
+                        Crafty.e("energy").create(entity).launch();
                     }
                     if (e != undefined && e.originalEvent != undefined)
                         e.originalEvent.preventDefault();
@@ -43,7 +46,7 @@ define([], function() {
                         e.originalEvent.preventDefault();
                 })
                 .collision(
-                    new Crafty.polygon(10, 10, 35, 10, 35, 42, 10, 42)
+                    new Crafty.polygon(10, 10, 35, 10, 35, 45, 10, 45)
                 )
                 .attr({x: 50, y: 300, w: 32, h: 50})
                 .gravity("Floor")
@@ -59,7 +62,6 @@ define([], function() {
                         if (this.hit('Wall')) {
                             this.vy =100 ;
                             this.y=from.oldValue ;
-                            console.log("hit y");
                         }
                         if (this.y > 500) {
                             console.log("loose");
@@ -67,20 +69,13 @@ define([], function() {
                     }
                 }).onHit("oblique", function (data) {
                     var obj = data[0].obj;
-                    this.move("n", 5);
+                    this.move("n", 10);
                     this.resetHitChecks('oblique');
                 })
                 .bind("CheckLanding", function(ground) {
-                    //console.log(this) ;
                     if (this.y + this.h > ground.y + this.dy) { // forbid landing, if player's feet are not above ground
                         this.canLand = false;
                     }
-                    /*var collision = this.cbr();
-                    console.log(collision);
-                    console.log(ground.mbr());
-                    if(ground.intersect(collision._x, collision._y + 10, collision._w, collision._h-10)){
-                        this.canLand=false ;
-                    }*/
                 });
 
         };

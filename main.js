@@ -15,6 +15,7 @@ require(['loads', 'goku', 'TiledMapBuilder-master/WebContent/tiledmapbuilder','r
     Crafty.background('url(resources/bg.png) center center');
 
     var callback = function() {
+        Crafty.c("energy",components.energy) ;
         goku.init();
         Crafty.viewport.clampToEntities = false;
         Crafty.viewport.mouselook(false);
@@ -30,6 +31,8 @@ require(['loads', 'goku', 'TiledMapBuilder-master/WebContent/tiledmapbuilder','r
     var mapComponent = tiledmapbuilder;
     var map = firstMap;
     Crafty.c("elements", components.elements);
+    Crafty.c("attack",components.attack) ;
+    Crafty.c("littleExplosion",components.littleExplosion);
     Crafty.c("TiledMapBuilder",mapComponent) ;
     Crafty.e("2D, DOM, TiledMapBuilder").setMapDataSource(map)
         .createWorld(function (tiledmap) {
