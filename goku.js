@@ -8,7 +8,7 @@ define([], function() {
             return entity ;
         };
         this.init = function () {
-            entity = Crafty.e('2D, Canvas, goku, gokuStart, SpriteAnimation, Twoway, Keyboard, Gravity, Collision, Motion')
+            entity = Crafty.e('person, goku, gokuStart, ')
                 .reel("walkingRight", 500, [ // 4 sprite to walk to the right
                     [6, 5], [7, 5], [8, 5] // [x , y] positions in sprite sheet
                 ])
@@ -52,22 +52,7 @@ define([], function() {
                 .gravity("Floor")
                 .gravityConst("900")
                 //Collisions handling : when a collision occurs, velocity is changed to the opposite direction ( so goku move a little to the opposite direction)
-                .bind('Moved', function (from) {
-                    if (from.axis == "x") {
-                        if (this.hit('Wall')) {
-                            this.x = from.oldValue;
-
-                        }
-                    } else {
-                        if (this.hit('Wall')) {
-                            this.vy =100 ;
-                            this.y=from.oldValue ;
-                        }
-                        if (this.y > 500) {
-                            console.log("loose");
-                        }
-                    }
-                }).onHit("oblique", function (data) {
+                .onHit("oblique", function (data) {
                     var obj = data[0].obj;
                     this.move("n", 10);
                     this.resetHitChecks('oblique');

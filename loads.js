@@ -11,7 +11,7 @@ define([], function() {
                     tile: 71, //23,
                     // The height of each image
                     tileh: 95, //38,
-                    // We give names to three individual images
+                    // We give names component to three individual images
                     map: {
                         gokuStart: [6, 6],
                         gokuMiddle: [6, 7],

@@ -27,10 +27,11 @@ require(['loads', 'goku', 'TiledMapBuilder-master/WebContent/tiledmapbuilder','r
 
     var goku = new goku(_dbz);
     var assets=new assets() ;
-    var components= new components() ;
+    var components= new components(_dbz) ;
     var mapComponent = tiledmapbuilder;
     var map = firstMap;
     Crafty.c("elements", components.elements);
+    Crafty.c("person",components.person);
     Crafty.c("attack",components.attack) ;
     Crafty.c("littleExplosion",components.littleExplosion);
     Crafty.c("TiledMapBuilder",mapComponent) ;

@@ -2,7 +2,7 @@
  * Created by aubret on 21/02/17.
  */
 define([], function() {
-    var components = function(){
+    var components = function(_dbz){
         this.elements= {
             init: function () {
                 this.addComponent("Wall, Collision");
@@ -29,22 +29,33 @@ define([], function() {
                 return this ;
             },
             launch : function(){
+                var dir = ( this.creator.direction == "r" ? 1 : -1 );
                 this.attr({
-                    x : this.creator.x + this.creator.w,
+                    x : this.creator.x + dir *(this.creator.w / 2),
                     y : this.creator.y + this.creator.h / 3,
                     w : this.width ,
                     h : this.height
                 });
-                this.vx = 200 ;
-                this.ax =500 ;
+                this.vx =200*dir ;
+                this.ax =500*dir ;
                 this.collision([5, 16, 16, 10, 27, 16, 16, 27]) ;
-                this.checkHits('Wall').bind("HitOn", function(data){
-                    Crafty.e("littleExplosion").explode(this.cbr());
-                    this.destroy() ;
-                });
+                this.checkHits('Wall')
+                    .bind("HitOn", function(data){
+                        this.explode() ;
+                    })
+                    .bind("Moved", function(data){
+                        if(this.x > _dbz.maxX*2){
+                            this.explode();
+                        }
+                    });
                 return this ;
+            },
+            explode : function() {
+                Crafty.e("littleExplosion").explode(this.cbr());
+                this.destroy();
             }
-        },
+        };
+
         this.littleExplosion={
             init : function(){
                 this.addComponent("2D, DOM, SpriteAnimation, explosion")
@@ -57,6 +68,40 @@ define([], function() {
                 this.attr({x : position._x - 30, y : position._y - 30})
                     .animate("explode",1)
             }
+        };
+
+        this.person= {
+            direction : undefined, // will be r for right or l for left
+            init : function(){
+                this.addComponent("2D, Canvas, SpriteAnimation, Twoway, Keyboard, Gravity, Collision, Motion")
+                    .bind('Moved', function (from) {
+                        if (from.axis == "x") {
+                            if (this.hit('Wall')) {
+                                this.x = from.oldValue;
+                            }else if( this.x < from.oldValue){
+                                if( this.direction != "l"){
+                                    this.trigger("changeDirection", "l");
+                                    this.direction ="l";
+                                }
+                            }else{
+                                if( this.direction != "r"){
+                                    this.trigger("changeDirection", "r");
+                                    this.direction ="r";
+                                }
+                            }
+                        } else {
+                            if (this.hit('Wall')) {
+                                this.vy =100 ;
+                                this.y=from.oldValue ;
+                            }
+                            if (this.y > 500) {
+                                console.log("loose");
+                            }
+                        }
+                    });
+            }
+
+
         }
 
     };
