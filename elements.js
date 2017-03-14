@@ -23,6 +23,7 @@ define([], function() {
 
         this.energy={
             init : function(){
+				Crafty.audio.play("tir");
                 this.addComponent("attack, bigEnergy") ;
                 this.width = 30 ;
                 this.height = 30 ;
@@ -58,6 +59,7 @@ define([], function() {
 
         this.littleExplosion={
             init : function(){
+				Crafty.audio.play("explosion");
                 this.addComponent("2D, DOM, SpriteAnimation, explosion")
                     .reel("explode", 300, 1, 1 , 3);
                 this.bind("AnimationEnd", function(){
