@@ -23,6 +23,7 @@ require(['loads', 'goku', 'TiledMapBuilder-master/WebContent/tiledmapbuilder','r
             Crafty.viewport.follow(goku.getEntity(), 0, 0);
         });
         Crafty.viewport.centerOn(goku.getEntity(), 500);
+		Crafty.audio.play("background", -1);
     };
 
     var goku = new goku(_dbz);

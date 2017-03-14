@@ -3,7 +3,7 @@
  */
 define([], function() {
     var assets =  function () {
-        Crafty.paths({audio: "resources/", images: "resources/", sprites: "resources/"});
+        Crafty.paths({audio: "resources/audio/", images: "resources/", sprites: "resources/"});
         this.assets = {
             "sprites": {
                 "goku-transparent.png": {
@@ -34,6 +34,12 @@ define([], function() {
 
                 }
             },
+			"audio": {
+					explosion : "explosion-energie.mp3",
+					tir : "tir.mp3",
+					perteVie : "perte-vie.mp3",
+					background : "07.Goodbye_warriors.mp3"
+				},
         };
     };
     return assets ;
