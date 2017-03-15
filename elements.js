@@ -16,7 +16,6 @@ define([], function() {
             },
             create : function(entity){
                 this.creator = entity ;
-                this.ignoreHits("goku");
                 return this ;
             }
         };
@@ -67,6 +66,7 @@ define([], function() {
             explode : function(position){
                 this.attr({x : position._x - 30, y : position._y - 30})
                     .animate("explode",1)
+                return this ;
             }
         };
 
@@ -100,6 +100,33 @@ define([], function() {
                         }
                     });
             }
+
+
+        };
+
+        this.hasHealth = {
+            life : 0 ,
+            totalLife : 0,
+            init : function(){
+                this.addComponent("Model, SpriteAnimation") ;
+                this.bind('Change[life]', function(){
+                    if(this.life == 0){
+                        this.trigger("die");
+                    }
+                })
+                .onHit("attack", function( data){
+                    var obj = data[0].obj ;
+                    if(obj.creator == this){
+                        this.attr("life", this.life-1);
+                    }
+                })
+            },
+            setLife : function(life){
+                this.life = life ;
+                this.totalLife = life ;
+                return this ;
+            }
+
 
 
         }

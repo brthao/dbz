@@ -8,14 +8,14 @@ define([], function() {
             return entity ;
         };
         this.init = function () {
-            entity = Crafty.e('person, goku, gokuStart, ')
+            entity = Crafty.e('person, goku, gokuStart, hasHealth')
                 .reel("walkingRight", 500, [ // 4 sprite to walk to the right
                     [6, 5], [7, 5], [8, 5] // [x , y] positions in sprite sheet
                 ])
                 .reel("walkingLeft", 500, [ // sprite to go to the left
                     [6, 7], [7, 7], [8, 7]
-                ])
-                .twoway("200");
+                ]);
+            entity.twoway("200");
             entity.bind('KeyDown', function (e) {// To move to left and right
                     if (this.isDown(Crafty.keys.RIGHT_ARROW) && this.isDown(Crafty.keys.LEFT_ARROW)) {
                         this.pauseAnimation();
@@ -53,7 +53,6 @@ define([], function() {
                 .gravityConst("900")
                 //Collisions handling : when a collision occurs, velocity is changed to the opposite direction ( so goku move a little to the opposite direction)
                 .onHit("oblique", function (data) {
-                    var obj = data[0].obj;
                     this.move("n", 10);
                     this.resetHitChecks('oblique');
                 })
@@ -62,6 +61,13 @@ define([], function() {
                         this.canLand = false;
                     }
                 });
+            entity.bind("die", function(){
+                    console.log("jsuis mort mdr");
+                    Crafty.stop(true);
+                    //printbutton() ;
+                    //entity.destroy() ;
+                })
+                .setLife(10);
 
         };
     };
